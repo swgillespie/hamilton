@@ -24,7 +24,7 @@ public final class KerbalX extends HamiltonVessel {
       ),
       new KillEngines(),
       Wait.forAtmosphericDeparture(conn),
-      new RaiseApoapsis(100000),
+      new RaiseApoapsis(150000),
     };
   }
 

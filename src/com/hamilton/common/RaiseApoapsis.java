@@ -9,6 +9,7 @@ import krpc.client.services.SpaceCenter;
 import krpc.schema.KRPC.ProcedureCall;
 import krpc.client.services.KRPC.Expression;
 import krpc.client.services.SpaceCenter.Vessel;
+import krpc.client.services.SpaceCenter.Node;
 
 import java.util.logging.Logger;
 
@@ -29,7 +30,8 @@ public final class RaiseApoapsis extends Stage {
   @Override
   public void execute(Connection conn) throws RPCException, StreamException {
     LOGGER.info("Raising apoapsis to " + targetApoapsis);
-    Vessel vessel = SpaceCenter.newInstance(conn).getActiveVessel();
+    SpaceCenter spaceCenter = SpaceCenter.newInstance(conn);
+    Vessel vessel = spaceCenter.getActiveVessel();
 
     // Don't max out the throttle; we're in space and this is a delicate burn.
     vessel.getControl().setThrottle(0.5f);
@@ -45,5 +47,10 @@ public final class RaiseApoapsis extends Stage {
     vessel.getControl().setThrottle(0.0f);
 
     LOGGER.info("Killed engines, apoapsis is " + vessel.getOrbit().getApoapsisAltitude());
+    double circularizationBurnDeltaV = OrbitMath.orbitCircularizationCost(vessel.getOrbit());
+    LOGGER.info(circularizationBurnDeltaV + " m/s to circularize");
+    double burnTime = OrbitMath.burnTime(vessel, circularizationBurnDeltaV);
+    LOGGER.info(burnTime + "s burn time");
+    vessel.getControl().addNode(spaceCenter.getUT() + vessel.getOrbit().getTimeToApoapsis(), (float) circularizationBurnDeltaV, 0, 0);
   }
 }
