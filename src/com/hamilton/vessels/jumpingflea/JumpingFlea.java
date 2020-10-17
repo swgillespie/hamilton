@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  * Onboard computer for the "Jumping Flea" vessel that ships with stock KSP.
- *
+ * <p>
  * The Jumping Flea doesn't get to orbit and doesn't even try. It launches straight up, falls for a bit, deploys its
  * parachute, lands, and is recovered. This computer results in a fully-automated flight.
  */
@@ -24,12 +24,12 @@ public final class JumpingFlea extends HamiltonVessel {
   @Override
   protected Stage[] getStages(Connection conn) throws RPCException {
     return new Stage[]{
-            new Countdown(),
-            Wait.forSurfaceAltitudeGreaterThan(conn, 5000),
-            Wait.forSurfaceAltitudeLessThan(conn, 2000),
-            new DeployChute(),
-            Wait.forLanding(conn),
-            new Recover()
+      new Countdown(),
+      Wait.forSurfaceAltitudeGreaterThan(conn, 5000),
+      Wait.forSurfaceAltitudeLessThan(conn, 2000),
+      new DeployChute(),
+      Wait.forLanding(conn),
+      new Recover()
     };
   }
 

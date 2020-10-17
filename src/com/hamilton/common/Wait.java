@@ -47,8 +47,15 @@ public final class Wait {
     ProcedureCall verticalSpeed = conn.getCall(spaceCenter.getActiveVessel().flight(null), "getVerticalSpeed");
     ProcedureCall surfaceAltitude = conn.getCall(spaceCenter.getActiveVessel().flight(null), "getSurfaceAltitude");
     Expression expr = Expression.and(conn,
-            Expression.lessThan(conn, Expression.call(conn, verticalSpeed), Expression.constantDouble(conn, 0.5)),
-            Expression.lessThan(conn, Expression.call(conn, surfaceAltitude), Expression.constantDouble(conn, 10)));
+      Expression.lessThan(conn, Expression.call(conn, verticalSpeed), Expression.constantDouble(conn, 0.5)),
+      Expression.lessThan(conn, Expression.call(conn, surfaceAltitude), Expression.constantDouble(conn, 10)));
     return forExpression(conn, expr, "landing on current body");
+  }
+
+  public static Stage forAtmosphericDeparture(Connection conn) throws RPCException {
+    SpaceCenter spaceCenter = SpaceCenter.newInstance(conn);
+    ProcedureCall atmosphereDensity = conn.getCall(spaceCenter.getActiveVessel().flight(null), "getAtmosphereDensity");
+    Expression expr = Expression.equal(conn, Expression.call(conn, atmosphereDensity), Expression.constantFloat(conn, 0));
+    return forExpression(conn, expr, "departing current body's atmosphere");
   }
 }
