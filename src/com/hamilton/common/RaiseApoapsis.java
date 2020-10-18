@@ -46,10 +46,5 @@ public final class RaiseApoapsis extends Stage {
     vessel.getControl().setThrottle(0.0f);
 
     LOGGER.info("Killed engines, apoapsis is " + vessel.getOrbit().getApoapsisAltitude());
-    double circularizationBurnDeltaV = OrbitMath.orbitCircularizationCost(vessel.getOrbit());
-    LOGGER.info(circularizationBurnDeltaV + " m/s to circularize");
-    double burnTime = OrbitMath.burnTime(vessel, circularizationBurnDeltaV);
-    LOGGER.info(burnTime + "s burn time");
-    vessel.getControl().addNode(spaceCenter.getUT() + vessel.getOrbit().getTimeToApoapsis(), (float) circularizationBurnDeltaV, 0, 0);
   }
 }

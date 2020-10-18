@@ -15,5 +15,5 @@ public abstract class Stage {
     return name;
   }
 
-  public abstract void execute(Connection krpcClient) throws RPCException, StreamException;
+  public abstract void execute(Connection conn) throws RPCException, StreamException;
 }
