@@ -4,9 +4,9 @@ import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.Stream;
 import krpc.client.StreamException;
-import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter;
 import krpc.client.services.SpaceCenter.Flight;
+import krpc.client.services.SpaceCenter.Vessel;
 
 import java.util.logging.Logger;
 
@@ -33,12 +33,12 @@ public final class GravityTurn extends Stage {
     while (Util.loopForever()) {
       if (altitude.get() > turnStartAltitude && altitude.get() < turnEndAltitude) {
         double frac = (altitude.get() - turnStartAltitude)
-                / (turnEndAltitude - turnStartAltitude);
+          / (turnEndAltitude - turnStartAltitude);
         double newTurnAngle = frac * 90.0;
         if (Math.abs(newTurnAngle - turnAngle) > 0.5) {
           turnAngle = newTurnAngle;
           vessel.getAutoPilot().targetPitchAndHeading(
-                  (float) (90 - turnAngle), 90);
+            (float) (90 - turnAngle), 90);
         }
       }
 

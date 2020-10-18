@@ -5,11 +5,10 @@ import krpc.client.Event;
 import krpc.client.RPCException;
 import krpc.client.StreamException;
 import krpc.client.services.KRPC;
-import krpc.client.services.SpaceCenter;
-import krpc.schema.KRPC.ProcedureCall;
 import krpc.client.services.KRPC.Expression;
+import krpc.client.services.SpaceCenter;
 import krpc.client.services.SpaceCenter.Vessel;
-import krpc.client.services.SpaceCenter.Node;
+import krpc.schema.KRPC.ProcedureCall;
 
 import java.util.logging.Logger;
 

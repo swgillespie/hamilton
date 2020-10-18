@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * A HamiltonVessel is the onboard computer for a particular vessel. Since vessel in KSP are custom, each vessel
  * generally needs some custom code to function. All vessels derive from HamiltonVessel.
- *
+ * <p>
  * The core of a HamiltonVessel is `getStages`, where a vessel can explicitly declare its list of stages.
  */
 public abstract class HamiltonVessel {

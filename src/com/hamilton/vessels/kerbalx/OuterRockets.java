@@ -2,14 +2,13 @@ package com.hamilton.vessels.kerbalx;
 
 import com.hamilton.common.Stage;
 import com.hamilton.common.Util;
-import com.hamilton.vessels.jumpingflea.JumpingFlea;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.Stream;
 import krpc.client.StreamException;
 import krpc.client.services.SpaceCenter;
-import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.Resources;
+import krpc.client.services.SpaceCenter.Vessel;
 
 import java.util.logging.Logger;
 
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
  * To deal with this complexity, this stage monitors the total amount of fuel on the ship and stages based on that.
  */
 public final class OuterRockets extends Stage {
-  private static final Logger LOGGER = Logger.getLogger(JumpingFlea.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(OuterRockets.class.getName());
   private static final float TOTAL_LIQUID_FUEL = 8280;
   private static final float OUTER_TANK_SIZE = 180 * 3; // Three tanks, each 180 fuel in size
 

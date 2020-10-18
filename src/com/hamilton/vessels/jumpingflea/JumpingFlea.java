@@ -21,6 +21,13 @@ import java.util.logging.Logger;
 public final class JumpingFlea extends HamiltonVessel {
   private static final Logger LOGGER = Logger.getLogger(JumpingFlea.class.getName());
 
+  public static void main(String[] args) throws IOException, RPCException, StreamException {
+    JumpingFlea vessel = new JumpingFlea();
+    try (Connection connection = Connection.newInstance(vessel.getName())) {
+      vessel.run(connection);
+    }
+  }
+
   @Override
   protected Stage[] getStages(Connection conn) throws RPCException {
     return new Stage[]{
@@ -36,12 +43,5 @@ public final class JumpingFlea extends HamiltonVessel {
   @Override
   protected String getName() {
     return "Jumping Flea";
-  }
-
-  public static void main(String[] args) throws IOException, RPCException, StreamException {
-    JumpingFlea vessel = new JumpingFlea();
-    try (Connection connection = Connection.newInstance(vessel.getName())) {
-      vessel.run(connection);
-    }
   }
 }

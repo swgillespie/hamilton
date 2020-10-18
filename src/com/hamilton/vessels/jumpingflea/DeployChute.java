@@ -4,8 +4,8 @@ import com.hamilton.common.Stage;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.StreamException;
-import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter;
+import krpc.client.services.SpaceCenter.Vessel;
 
 import java.util.logging.Logger;
 

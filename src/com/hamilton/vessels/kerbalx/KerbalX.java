@@ -14,6 +14,13 @@ import java.io.IOException;
  * Once the gravity turn is done, we can get up to orbit pretty much like any other rocket.
  */
 public final class KerbalX extends HamiltonVessel {
+  public static void main(String[] args) throws IOException, RPCException, StreamException {
+    KerbalX vessel = new KerbalX();
+    try (Connection connection = Connection.newInstance(vessel.getName())) {
+      vessel.run(connection);
+    }
+  }
+
   @Override
   protected Stage[] getStages(Connection conn) throws RPCException {
     return new Stage[]{
@@ -31,12 +38,5 @@ public final class KerbalX extends HamiltonVessel {
   @Override
   protected String getName() {
     return "Kerbal X";
-  }
-
-  public static void main(String[] args) throws IOException, RPCException, StreamException {
-    KerbalX vessel = new KerbalX();
-    try (Connection connection = Connection.newInstance(vessel.getName())) {
-      vessel.run(connection);
-    }
   }
 }
