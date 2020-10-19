@@ -1,7 +1,7 @@
 package com.hamilton.vessels.kerbalx;
 
-import com.hamilton.common.Stage;
 import com.hamilton.common.Util;
+import com.hamilton.maneuvers.Maneuver;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.Stream;
@@ -19,19 +19,23 @@ import java.util.logging.Logger;
  * <p>
  * To deal with this complexity, this stage monitors the total amount of fuel on the ship and stages based on that.
  */
-public final class OuterRockets extends Stage {
-  private static final Logger LOGGER = Logger.getLogger(OuterRockets.class.getName());
+public final class KerbalXAsparagusStagingManeuver extends Maneuver {
+  private static final Logger LOGGER = Logger.getLogger(KerbalXAsparagusStagingManeuver.class.getName());
   private static final float TOTAL_LIQUID_FUEL = 8280;
   private static final float OUTER_TANK_SIZE = 180 * 3; // Three tanks, each 180 fuel in size
 
-  public OuterRockets() {
-    super("outer rockets");
+  @Override
+  public String getName() {
+    return "Kerbal X asparagus staging";
   }
 
   @Override
   public void execute(Connection conn) throws RPCException, StreamException {
-    LOGGER.info("Watching total fuel level to ditch outer rockets");
+    // Stage 0 are the restraints holding the rocket in place; get rid of those immediately.
     Vessel vessel = SpaceCenter.newInstance(conn).getActiveVessel();
+    LOGGER.info("Staging to break out of restraints");
+    vessel.getControl().activateNextStage();
+    LOGGER.info("Watching total fuel level to ditch outer rockets");
     Resources resources = vessel.getResources();
     Stream<Float> liquidFuel = conn.addStream(resources, "amount", "LiquidFuel");
     int timesStaged = 0;

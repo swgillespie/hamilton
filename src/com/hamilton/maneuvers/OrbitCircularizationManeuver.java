@@ -1,21 +1,24 @@
-package com.hamilton.common;
+package com.hamilton.maneuvers;
 
+import com.hamilton.common.OrbitMath;
+import com.hamilton.common.Util;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.Stream;
 import krpc.client.StreamException;
 import krpc.client.services.SpaceCenter;
-import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.Node;
+import krpc.client.services.SpaceCenter.Vessel;
 import org.javatuples.Triplet;
 
 import java.util.logging.Logger;
 
-public final class CircularizeOrbit extends Stage {
-  private static final Logger LOGGER = Logger.getLogger(CircularizeOrbit.class.getName());
+public class OrbitCircularizationManeuver extends Maneuver {
+  private static final Logger LOGGER = Logger.getLogger(OrbitCircularizationManeuver.class.getName());
 
-  public CircularizeOrbit() {
-    super("circularize orbit");
+  @Override
+  public String getName() {
+    return "circularize orbit";
   }
 
   @Override
@@ -53,7 +56,26 @@ public final class CircularizeOrbit extends Stage {
     vessel.getControl().setThrottle(1);
     Util.sleepSeconds(burnTime);
     vessel.getControl().setThrottle(0);
+
+    // How far did we miss our goal?
+    Stream<Double> remainingBurn = conn.addStream(node, "getRemainingDeltaV");
+    double goalMiss = remainingBurn.get();
+    LOGGER.info("Missed goal by " + goalMiss + "m/s");
+
+    // Our fine-tuning burn is at 5% of full throttle, so multiply by 20 to get the burn time at 5% throttle.
+    double burnTimeToFixGoal = OrbitMath.burnTime(vessel, goalMiss) * 20;
+    if (burnTimeToFixGoal > 0.5) {
+      LOGGER.info("Fine-tuning burn");
+      vessel.getControl().setThrottle(0.05f);
+      while (Util.loopForever() && remainingBurn.get() > 5.0) {
+        LOGGER.fine("remaining burn: " + remainingBurn.get() + "m/s");
+      }
+    } else {
+      LOGGER.info("Not fine-tuning burn, we got close enough");
+    }
+
+    vessel.getControl().setThrottle(0);
     LOGGER.info("Burn complete");
-    vessel.getControl().removeNodes();
+    node.remove();
   }
 }
