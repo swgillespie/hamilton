@@ -68,4 +68,12 @@ public final class OrbitMath {
     double flowRate = force / isp;
     return (m0 - m1) / flowRate;
   }
+
+  public static double hohmannTransferPeriapsisBurnCost(Orbit orbit, double newApoapsisAltitude) throws RPCException {
+    // https://en.wikipedia.org/wiki/Hohmann_transfer_orbit#Calculation
+    double mu = orbit.getBody().getGravitationalParameter();
+    double r1 = orbit.getApoapsis();
+    double r2 = newApoapsisAltitude;
+    return Math.sqrt(mu / r1) * (Math.sqrt((2 * r2) / (r1 + r2)) - 1);
+  }
 }
